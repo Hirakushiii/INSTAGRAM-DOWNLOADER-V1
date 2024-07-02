@@ -1,4 +1,3 @@
-// EVENT CLIPBOARD
 document.querySelector('#toggle').addEventListener('change', function(){
     // console.log(this.checked);
     if(!this.checked){
@@ -7,6 +6,7 @@ document.querySelector('#toggle').addEventListener('change', function(){
         return document.querySelector('html').classList.add('dark');
     }
 });
+// EVENT CLIPBOARD
 document.querySelector('#clipboard').addEventListener('click', ()=>{
     if(navigator.clipboard){
         navigator.clipboard.readText().then(text => {
@@ -77,14 +77,46 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
                     let alldata_s = '';
                     alldata.forEach(e => {
                         // console.log(e.url);
-                        alldata_s += foto_fragment(e);
+                        alldata_s += foto_fragment(e,'Download Foto');
                         document.querySelector('#download-area-foto').innerHTML = alldata_s
                     });
                 }
             });
         document.querySelector('#download-area-foto').innerHTML = await loading();
         input_key.value = '';
-    }else{
+    }else if(input_key.value.includes('instagram.com/stories')){
+        const apikey = 'https://api.nyxs.pw/dl/ig?url=';
+        fetch(`${apikey}${input_key.value}`)
+            .then((response) =>{
+                if (!response.ok){
+                    console.error(response.statusText);
+                };
+                return response.json();
+            }).then( async(Response) =>{
+                // if(Response.msg.includes('403')){ 
+                //     return Swal.fire({
+                //         icon: "error",
+                //         title: "Oops...",
+                //         text: "Fitur ini sedang dalam perbaikan, Silahkan datang kembali!"
+                //     });                    
+                // }else 
+                if(Response.status === 'false'){
+                    return alert('link salah bro!');
+                    // console.log(Response.msg)
+                }else{
+                    const alldata = Response.result;
+                    let alldata_s = '';
+                    let s = 1;
+                    alldata.forEach(e => {
+                        alldata_s += foto_fragment(e,`Download Story #${s}`)
+                        s++
+                    });
+                    return document.querySelector('#download-area-foto').innerHTML = alldata_s
+                }
+            });
+            document.querySelector('#download-area-foto').innerHTML = await loading();
+            input_key.value = '';
+        }else{
         alert('error!');
         input_key.value = '';
     }
@@ -102,8 +134,8 @@ function video_fragment(a){
                 </div>
             </div>`;
 }
-function foto_fragment(b){
-    return `<a href="${b.url}" class="btn btn-primary w-full mb-1 ring-0 !text-black dark:text-white bg-gradient-to-r to-45% from-teal-300 to-purple-400 dark:bg-gradient-to-r dark:from-color-1 dark:to-color-2">Download Foto</a>
+function foto_fragment(b,text){
+    return `<a href="${b.url}" class="btn btn-primary w-full mb-1 ring-0 !text-black dark:text-white bg-gradient-to-r to-45% from-teal-300 to-purple-400 dark:bg-gradient-to-r dark:from-color-1 dark:to-color-2">${text}</a>
     `;
 }
 function loading(){
