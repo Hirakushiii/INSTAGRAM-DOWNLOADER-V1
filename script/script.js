@@ -49,8 +49,8 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
                     document.querySelector('#download-area-foto').innerHTML = '';
                     // console.log(Response.result);
                     const alldata = Response.result;
-                    // console.log(alldata.url);
-                    document.querySelector('#download-area').innerHTML = video_fragment(alldata.url);
+                    // console.log(alldata);
+                    document.querySelector('#download-area').innerHTML = video_fragment(alldata[0].url);
                 }
             });
         document.querySelector('#download-area').innerHTML = await loading();
