@@ -1,9 +1,9 @@
 document.querySelector('#toggle').addEventListener('change', function(){
     // console.log(this.checked);
     if(!this.checked){
-        return document.querySelector('html').classList.remove('dark');
+        return document.querySelector('html').setAttribute('data-theme',"cupcake");
     }else{
-        return document.querySelector('html').classList.add('dark');
+        return document.querySelector('html').setAttribute('data-theme',"night");
     }
 });
 // EVENT CLIPBOARD
@@ -14,7 +14,9 @@ document.querySelector('#clipboard').addEventListener('click', ()=>{
             targetElement.value = text;
         });
     }else{
-        alert('Kamu belum menyalin apapun brok!')
+        navigator.clipboard.readText().then(text => {
+            console.log(text);
+        });
     }
 });
 
@@ -24,14 +26,14 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
     if (input_key.value === '') {
         return Swal.fire({
             icon: "error",
-            title: "Oops...",
-            text: "Input kosong wak!"
+            title: "Whoop...",
+            text: "Mana Link Instagramnya...???"
         });
     }else if(!input_key.value.includes('instagram.com')){
         return Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Link yang kamu tuliskan bukan dari instagram brok!"
+            text: "Link yang kamu berikan bukan dari instagram brok!"
         });
     }else if(input_key.value.includes('instagram.com/reel')){
         const apikey = 'https://api.nyxs.pw/dl/ig?url=';
@@ -46,9 +48,11 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
                     return alert('link salah bro!');
                     // console.log(Response);
                 }else{
+                    document.querySelector('#download-area-foto').innerHTML = '';
                     // console.log(Response.result);
-                    const alldata = Response.result;
-                    document.querySelector('#download-area').innerHTML = video_fragment(alldata[0]);
+                    const alldata = Response.result[0];
+                    // console.log(alldata[0]);
+                    document.querySelector('#download-area').innerHTML = video_fragment(alldata.url);
                 }
             });
         document.querySelector('#download-area').innerHTML = await loading();
@@ -62,22 +66,22 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
                 };
                 return response.json();
             }).then( async(Response) =>{
-                if(Response.msg.includes('403')){ 
+                if(!Response.status === 'true'){
                     return Swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: "Fitur ini sedang dalam perbaikan, Silahkan datang kembali!"
-                    });                    
-                }else if(Response.status === 'false'){
-                    return alert('link salah bro!');
-                    // console.log(Response.msg)
+                        text: "Link Bermasalah Brok!"
+                    });  
                 }else{
-                    // // console.log(Response.result);
-                    const alldata = Response.result;
+                    document.querySelector('#download-area').innerHTML = '';
+                    // console.log(Response.result);
+                    const alldata = Response.result.url;
                     let alldata_s = '';
+                    let num = 0;
                     alldata.forEach(e => {
-                        // console.log(e.url);
-                        alldata_s += foto_fragment(e,'Download Foto');
+                        console.log(e);
+                        num += 1;
+                        alldata_s += foto_fragment(e,`Download Foto #${num}`);
                         document.querySelector('#download-area-foto').innerHTML = alldata_s
                     });
                 }
@@ -100,15 +104,21 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
                 //         text: "Fitur ini sedang dalam perbaikan, Silahkan datang kembali!"
                 //     });                    
                 // }else 
+                let crak = Response.result;                
                 if(Response.status === 'false'){
-                    return alert('link salah bro!');
-                    // console.log(Response.msg)
+                    return Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Link Bermasalah Brok!"
+                    }); 
                 }else{
-                    const alldata = Response.result;
+                    document.querySelector('#download-area').innerHTML = '';
+                    const alldata = Response.result.url;
                     let alldata_s = '';
                     let s = 1;
-                    alldata.forEach(e => {
-                        alldata_s += foto_fragment(e,`Download Story #${s}`)
+                    await alldata.forEach(e => {
+                        // console.log(e);
+                        alldata_s += foto_fragment(e,`Download Story #${s}`);
                         s++
                     });
                     return document.querySelector('#download-area-foto').innerHTML = alldata_s
@@ -124,18 +134,13 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
 
 // FRAGMENT
 function video_fragment(a){
-    return `<div class="card w-96 bg-base-100 shadow-xl mt-7 mx-auto rounded-t-xl">
-                <video src="${a.url}" class="object-fill aspect-video rounded-t-xl" height="25" controls>
-                </video>
-                <div class="card-body items-center text-center">
-                    <div class="card-actions w-full">
-                        <a href="${a.url}" class="btn btn-primary w-full">Download</a>
-                    </div>
-                </div>
-            </div>`;
+    return `
+                <video src="${a}" class="mx-auto text-center rounded-t-xl" controls>
+        </video>
+            `;
 }
 function foto_fragment(b,text){
-    return `<a href="${b.url}" class="btn btn-primary w-full mb-1 ring-0 !text-black dark:text-white bg-gradient-to-r to-45% from-teal-300 to-purple-400 dark:bg-gradient-to-r dark:from-color-1 dark:to-color-2">${text}</a>
+    return `<a href="${b}" class="btn btn-primary w-full mb-1 ring-0 !text-black dark:text-white bg-gradient-to-r to-45% from-teal-300 to-purple-400 dark:bg-gradient-to-r dark:from-color-1 dark:to-color-2">${text}</a>
     `;
 }
 function loading(){
