@@ -50,15 +50,10 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
                 }else{
                     document.querySelector('#download-area-foto').innerHTML = '';
                     // console.log(Response.result);
-<<<<<<< HEAD
+
                     const alldata = Response.result[0];
                     // console.log(alldata[0]);
                     document.querySelector('#download-area').innerHTML = video_fragment(alldata.url);
-=======
-                    const alldata = Response.result;
-                    // console.log(alldata);
-                    document.querySelector('#download-area').innerHTML = video_fragment(alldata[0].url);
->>>>>>> b6dd234e175e63369bf176135946e85b2a9c37f4
                 }
             });
         document.querySelector('#download-area').innerHTML = await loading();
@@ -140,18 +135,11 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
 
 // FRAGMENT
 function video_fragment(a){
-<<<<<<< HEAD
     return `
                 <video src="${a}" class="mx-auto text-center rounded-t-xl" controls>
         </video>
             `;
-=======
-    return `<div class="card w-96 bg-base-100 shadow-xl mt-7 mx-auto rounded-t-xl">
-                <video src="${a}" class="object-fill aspect-video rounded-t-xl" height="25" controls>
-                </video>
-            </div>`;
->>>>>>> b6dd234e175e63369bf176135946e85b2a9c37f4
-}
+        }
 function foto_fragment(b,text){
     return `<a href="${b}" class="btn btn-primary w-full mb-1 ring-0 !text-black dark:text-white bg-gradient-to-r to-45% from-teal-300 to-purple-400 dark:bg-gradient-to-r dark:from-color-1 dark:to-color-2">${text}</a>
     `;
