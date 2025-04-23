@@ -76,13 +76,13 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
                 }else{
                     document.querySelector('#download-area').innerHTML = '';
                     // console.log(Response.result);
-                    const alldata = Response.result.url;
+                    const alldata = Response.result;
                     let alldata_s = '';
                     let num = 0;
                     alldata.forEach(e => {
-                        console.log(e);
+                        // console.log(e);
                         num += 1;
-                        alldata_s += foto_fragment(e,`Download Foto #${num}`);
+                        alldata_s += foto_fragment(e.url,`Download Foto #${num}`);
                         document.querySelector('#download-area-foto').innerHTML = alldata_s
                     });
                 }
