@@ -1,3 +1,9 @@
+Swal.fire({
+    title: "Hollaaa....!",
+    text: "Pastikan Akun Tidak Private Apalagi Postingan Closefriend....!",
+    icon: "info"
+  });
+
 document.querySelector('#toggle').addEventListener('change', function(){
     // console.log(this.checked);
     if(!this.checked){
@@ -79,11 +85,14 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
                     const alldata = Response.result;
                     let alldata_s = '';
                     let num = 0;
+                    // console.log(alldata);
                     alldata.forEach(e => {
                         // console.log(e);
                         num += 1;
-                        alldata_s += foto_fragment(e.url,`Download Foto #${num}`);
-                        document.querySelector('#download-area-foto').innerHTML = alldata_s
+                        alldata_s += foto_fragment(e.url,`Download Slide #${num}`);
+                        if (num <= 20) {
+                            document.querySelector('#download-area-foto').innerHTML = alldata_s
+                        }
                     });
                 }
             });
