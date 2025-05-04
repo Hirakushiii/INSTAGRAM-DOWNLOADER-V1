@@ -1,6 +1,6 @@
 Swal.fire({
-    title: "Hollaaa....!",
-    text: "Pastikan Akun Tidak Private Apalagi Postingan Closefriend....!",
+    title: "Hollaaa...",
+    text: "Pastikan Akun Dari Pemilik Postingan Tidak Private Apalagi Postingan Closefriend..!",
     icon: "info"
   });
 
@@ -41,6 +41,33 @@ document.querySelector('#download-btn').addEventListener('click', async()=>{
             title: "Oops...",
             text: "Link yang kamu berikan bukan dari instagram brok!"
         });
+    }else if(input_key.value.includes('instagram.com') && input_key.value.includes('audio')){
+        Swal.fire({
+            title: "Error...",
+            text: "Download Audio Instagram Sedang Dalam Perbaikan!",
+            icon: "error"
+          });
+        // const apikey = 'https://api.nyxs.pw/dl/ig-audio?url=';
+        // fetch(`${apikey}${input_key.value}`)
+        //     .then((response) =>{
+        //         if (!response.ok){
+        //             console.error(response.statusText);
+        //         };
+        //         return response.json();
+        //     }).then( async(Response) =>{
+        //         if(Response.status === 'false'){
+        //             return alert('link salah bro!');
+        //             // console.log(Response);
+        //         }else{
+        //             document.querySelector('#download-area-foto').innerHTML = '';
+        //             // console.log(Response.result);
+        //             const alldata = Response.result[0];
+        //             // console.log(alldata[0]);
+        //             document.querySelector('#download-area').innerHTML = audio_fragment(alldata.url);
+        //         }
+        //     });
+        // document.querySelector('#download-area').innerHTML = await loading();
+        input_key.value = '';
     }else if(input_key.value.includes('instagram.com/reel')){
         const apikey = 'https://api.nyxs.pw/dl/ig?url=';
         fetch(`${apikey}${input_key.value}`)
